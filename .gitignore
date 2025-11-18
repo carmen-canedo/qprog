@@ -1,2 +1,55 @@
+# -----------------------------
+# SECRETS / API KEYS
+# -----------------------------
 .env
 save_ibm_account.py
+*.key
+*.secret
+*.pem
+
+# -----------------------------
+# PYTHON / VENV / CONDA
+# -----------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.sqlite3
+
+# VS Code Python environment folders
+.python_env/
+.python/
+.ipynb_checkpoints/
+
+# -----------------------------
+# JUPYTER NOTEBOOKS ARTIFACTS
+# -----------------------------
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+*.nbconvert.ipynb
+
+# -----------------------------
+# OS / EDITOR JUNK
+# -----------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# -----------------------------
+# ANACONDA / PIP ENVIRONMENT STATE FILES
+# (These are regenerated, not needed in repo)
+# -----------------------------
+conda-meta/
+pip-selfcheck.json
+
+# -----------------------------
+# QISKIT LOCAL DATA (NOT NEEDED IN REPO)
+# -----------------------------
+.qiskit/
