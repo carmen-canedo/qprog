@@ -92,26 +92,36 @@ class ClassicalCircuit:
 
             quantumCircuit.barrier()
 
-            a_mapped = a if a < n_inputs else a + aux_shift
+            a_mapped = a if a in self.input_gates else a + aux_shift
 
             if gate_type == 'and':
 
                 b = gate[2]
                 c = gate[3]
-                quantumCircuit.ccx(b, c, a)
 
-                b_mapped = b if b < n_inputs else b + aux_shift
-                c_mapped = c if c < n_inputs else c + aux_shift
+                b_mapped = b if b in self.input_gates else b + aux_shift
+                c_mapped = c if c in self.input_gates else c + aux_shift
 
                 quantumCircuit.ccx(b_mapped, c_mapped, a_mapped)
 
             elif gate_type == 'not':
 
                 b = gate[2]
-                b_mapped = b if b < n_inputs else b + aux_shift
+                b_mapped = b if b in self.input_gates else b + aux_shift
 
                 quantumCircuit.x(a_mapped)
                 quantumCircuit.cx(b_mapped, a_mapped)
+
+        quantumCircuit.barrier()
+
+        # Classical copied to output qubits
+        for i in range(self.n_outputs):
+            a = self.output_gates[i]
+            a_aux = a + aux_shift
+            a_prime = n_inputs + i
+            quantumCircuit.cx(a_aux, a_prime)
+        
+        quantumCircuit.barrier()
 
         # From step 2
         for i in range(len(self.gates) - 1, -1, -1):
@@ -120,21 +130,21 @@ class ClassicalCircuit:
             a = gate[0]
             gate_type = gate[1]
 
-            a_mapped = a if a < n_inputs else a + aux_shift
+            a_mapped = a if a in self.input_gates else a + aux_shift
 
             if gate_type == "and":
                 b = gate[2]
                 c = gate[3]
 
-                b_mapped = b if b < n_inputs else b + aux_shift
-                c_mapped = c if c < n_inputs else c + aux_shift
+                b_mapped = b if b in self.input_gates else b + aux_shift
+                c_mapped = c if c in self.input_gates else c + aux_shift
 
                 quantumCircuit.ccx(b_mapped, c_mapped, a_mapped)
 
             elif gate_type == 'not':
                 b = gate[2]
 
-                b_mapped = b if b < n_inputs else b + aux_shift
+                b_mapped = b if b in self.input_gates else b + aux_shift
 
                 quantumCircuit.cx(b_mapped, a_mapped)
                 quantumCircuit.x(a_mapped)
