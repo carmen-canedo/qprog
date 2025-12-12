@@ -62,7 +62,21 @@ class ClassicalCircuit:
         return quantumCircuit
     
     def convert_step_2(self,quantumCircuit):
-        pass
+
+        a = gate[0]
+        gate_type = gate[1]
+
+        if gate_type == "and":
+            b = gate[2]
+            c = gate[3]
+            quantumCircuit.ccx(b, c, a)
+
+        elif gate_type == 'not':
+            b = gate[2]
+            quantumCircuit.cx(b, a)
+            quantumCircuit.x(a)
+
+        return quantumCircuit
 
     def convert(self,quantumCircuit):
         pass       
@@ -78,11 +92,11 @@ cc.convert_step_1(qc)
 print(qc)
 print()
 
-# n_wires = cc.n_inputs + cc.n_outputs + cc.n_internal
-# qc = QuantumCircuit(n_wires,0)
-# cc.convert_step_2(qc)
-# print(qc)
-# print()
+n_wires = cc.n_inputs + cc.n_outputs + cc.n_internal
+qc = QuantumCircuit(n_wires,0)
+cc.convert_step_2(qc)
+print(qc)
+print()
 
 # n_wires = cc.n_inputs + 2*cc.n_outputs + cc.n_internal
 # qc = QuantumCircuit(n_wires,0)
