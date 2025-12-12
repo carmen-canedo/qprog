@@ -81,7 +81,66 @@ class ClassicalCircuit:
         return quantumCircuit
 
     def convert(self,quantumCircuit):
-        pass       
+
+        n_inputs = self.n_inputs
+        aux_shift = self.n_outputs
+
+        # From step 1
+        for gate in self.gates:
+            a = gate[0]
+            gate_type = gate[1]
+
+            quantumCircuit.barrier()
+
+            a_mapped = a if a < n_inputs else a + aux_shift
+
+            if gate_type == 'and':
+
+                b = gate[2]
+                c = gate[3]
+                quantumCircuit.ccx(b, c, a)
+
+                b_mapped = b if b < n_inputs else b + aux_shift
+                c_mapped = c if c < n_inputs else c + aux_shift
+
+                quantumCircuit.ccx(b_mapped, c_mapped, a_mapped)
+
+            elif gate_type == 'not':
+
+                b = gate[2]
+                b_mapped = b if b < n_inputs else b + aux_shift
+
+                quantumCircuit.x(a_mapped)
+                quantumCircuit.cx(b_mapped, a_mapped)
+
+        # From step 2
+        for i in range(len(self.gates) - 1, -1, -1):
+
+            gate = self.gates[i]
+            a = gate[0]
+            gate_type = gate[1]
+
+            a_mapped = a if a < n_inputs else a + aux_shift
+
+            if gate_type == "and":
+                b = gate[2]
+                c = gate[3]
+
+                b_mapped = b if b < n_inputs else b + aux_shift
+                c_mapped = c if c < n_inputs else c + aux_shift
+
+                quantumCircuit.ccx(b_mapped, c_mapped, a_mapped)
+
+            elif gate_type == 'not':
+                b = gate[2]
+
+                b_mapped = b if b < n_inputs else b + aux_shift
+
+                quantumCircuit.cx(b_mapped, a_mapped)
+                quantumCircuit.x(a_mapped)
+
+
+        return quantumCircuit    
 
 
     
@@ -100,8 +159,8 @@ cc.convert_step_2(qc)
 print(qc)
 print()
 
-# n_wires = cc.n_inputs + 2*cc.n_outputs + cc.n_internal
-# qc = QuantumCircuit(n_wires,0)
-# cc.convert(qc)
-# print(qc)
-# print()
+n_wires = cc.n_inputs + 2*cc.n_outputs + cc.n_internal
+qc = QuantumCircuit(n_wires,0)
+cc.convert(qc)
+print(qc)
+print()
