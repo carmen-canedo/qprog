@@ -47,10 +47,12 @@ class ClassicalCircuit:
             a = gate[0]
             gate_type = gate[1]
 
+            quantumCircuit.barrier()
+
             if gate_type == 'and':
                 b = gate[2]
                 c = gate[3]
-                quantumCircuit.ccx(b, a, c)
+                quantumCircuit.ccx(b, c, a)
 
             elif gate_type == 'not':
                 b = gate[2]
