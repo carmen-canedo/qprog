@@ -67,7 +67,7 @@ class ClassicalCircuit:
 
 
     
-cc = ClassicalCircuit("circuit.txt")
+cc = ClassicalCircuit("hw3/circuit.txt")
 cc.print()
 
 n_wires = cc.n_inputs + cc.n_outputs + cc.n_internal
